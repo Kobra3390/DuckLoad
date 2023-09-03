@@ -1,8 +1,8 @@
 # Introduzione a DuckLoad
 
-DuckLoad é uno script in python3 che sfrutta la libreria `pyflipper` scritta da [wh00hw]([https://link-url-here.org](https://github.com/wh00hw/pyFlipper)https://github.com/wh00hw/pyFlipper) per interagire con il device Flipper Zero.
+DuckLoad é uno script in python3 che sfrutta la libreria `pyflipper` di [wh00hw](https://github.com/wh00hw/pyFlipper) per interagire con il device Flipper Zero.
 
-La funzione base di DuckLoad é quella di caricare / cancellare payload badusb, ma non sono, le funzioni specifiche vengono spiegate di seguito: 
+La funzione base di DuckLoad é quella di caricare / cancellare payload badusb, ma non solo, le funzioni specifiche vengono spiegate di seguito: 
 
 - `-d`: Cancella un payload badusb dallo storage interno del Flipper Zero, dovrá essere specificata la path interna del file che si vuole cancellare.
 - `-c`: Permette di caricare un payload badusb dal computer locale allo storage interno del Flipper Zero, per farlo, lo script necessitá della path locale del computer dove risiede il payload. Oltre questo va specificato il nome con cui il payload verrá mostrato all'interno del Flipper. **Nota:** sará necessario modificare la seguente variabile per specificare la path interna dove lo script caricherá il payload: `myfile = f"/ext/badkb/MyPayloads/{name_payload}.txt"`.
@@ -98,7 +98,7 @@ References to learn more:
 <SNIP>
 ```
 
-Conversione Payload BadUSB in Programma .ino:
+Conversione Payload BadUSB in Programma `.ino`:
 ```powershell
 PS C:\Users\User\Desktop\DuckLoad> python .\DuckLoad.py -convert
    
@@ -117,12 +117,12 @@ Enter a badusb payload path: input.txt
 [ Conversion Completed. ]
 ```
 
+**Nota**: per quest'ultima funzionalità consiglio di dare sempre una doverosa controllata al codice `.ino` che viene generato, perchè in alcune casistiche potrebbe generare codice errato. 
+
 ---
 
 # Prerequisiti per Usare lo Script
-Per poter usare DuckLoad bisogna avere sulla propria macchina installato l'interprete Python3 aggiornato all'ultima versione. 
-
-Oltre a questo DuckLoad necessitá dei seguenti pacchetti: _pyflipper_, _rich_.
+Per poter usare DuckLoad bisogna avere sulla propria macchina installato l'interprete Python3 aggiornato all'ultima versione. Oltre a questo DuckLoad necessitá dei seguenti pacchetti: _pyflipper_, _rich_.
 
 Per poterli installare usiamo il gestore di pacchetti pip3 con il file `requirements.txt`:
 
