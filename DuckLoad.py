@@ -2,7 +2,7 @@
 from pyflipper.pyflipper import PyFlipper
 from rich.console import Console
 from rich.style import Style
-import time, platform, sys, requests
+import time, platform, sys, requests, os, sqlite3
 
 # Init dell'oggetto Console()
 console = Console()
@@ -30,6 +30,7 @@ try:
         \tDuckLoad.py -c               [ Upload a payload to FlipperZero storage ]
         \tDuckLoad.py -cve             [ Get information about a CVE code ]
         \tDuckLoad.py -convert         [ Convert Duckyscript to Arduino code ]
+        \tDuckLoad.py -db              [ Convert a directory with badusb payload to a db ]
         """
         console.print(help_text, style=myStyle3)
 
@@ -200,6 +201,48 @@ try:
         with open("output_arduino_code.ino", "w") as file:
             file.write(arduino_code)
         console.print("\n[ Conversion Completed. ]\n", style=myStyle3)
+    
+    elif sys.argv[1] == "-db":
+        def create_database(database_name):
+            conn = sqlite3.connect(database_name)
+            cursor = conn.cursor()
+            cursor.execute('''
+                CREATE TABLE IF NOT EXISTS testi (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    nome_file TEXT,
+                    contenuto TEXT
+                )
+            ''')
+            conn.commit()
+            conn.close()
+
+        def insert_text_file_into_db(cursor, file_path):
+            with open(file_path, "r", encoding="utf-8") as file:
+                contenuto = file.read()
+                cursor.execute("INSERT INTO testi (nome_file, contenuto) VALUES (?, ?)", (os.path.basename(file_path), contenuto))
+
+        def process_directory(database_name, directory):
+            conn = sqlite3.connect(database_name)
+            cursor = conn.cursor()
+
+            for root, _, files in os.walk(directory):
+                for filename in files:
+                    if filename.endswith(".txt"):
+                        file_path = os.path.join(root, filename)
+                        insert_text_file_into_db(cursor, file_path)
+        
+            conn.commit()
+            conn.close()
+
+        console.print("\n[ Enter the path to the directory containing text files ]", style=myStyle)
+        directory_input = input("DuckLoad-DB:~$ ")
+        console.print("\n[ Enter the SQLite database name ]", style=myStyle)
+        database_name = input("DuckLoad-DB:~$ ")
+
+        create_database(database_name)
+        process_directory(database_name, directory_input)
+
+        console.print(f"The files in the directory '{directory_input}' and its subdirectories have been inserted into the '{database_name}' database.", style=myStyle)
 
 except KeyboardInterrupt:
     console.print("\n\nAborting...\n\n", style=myStyle4)
