@@ -4,10 +4,12 @@ DuckLoad é uno script in python3 che sfrutta la libreria `pyflipper` di [wh00hw
 
 La funzione base di DuckLoad é quella di caricare / cancellare payload badusb, ma non solo, le funzioni specifiche vengono spiegate di seguito: 
 
+- `-h`: Mostra l'healper di DuckLoad.
 - `-d`: Cancella un payload badusb dallo storage interno del Flipper Zero, dovrá essere specificata la path interna del file che si vuole cancellare.
 - `-c`: Permette di caricare un payload badusb dal computer locale allo storage interno del Flipper Zero, per farlo, lo script necessita della path locale del computer dove risiede il payload. Oltre questo va specificato il nome con cui il payload verrá mostrato all'interno del Flipper. **Nota:** sará necessario modificare la seguente variabile per specificare la path interna dove lo script caricherá il payload: `myfile = f"/ext/badkb/MyPayloads/{name_payload}.txt"`.
 - `-cve`: Essendo che lo script puó automatizzare l'esecuzione di moduli Metasploit codificati in payload badusb, questa funzione permette di ricercare info su CVE pubbliche nel formato CVE-XXX-XXX.
 - `-convert`: Permette di convertire un payload badusb in un programma .ino, questa funzione puó essere utile per riutilizzare payload su board come la DigiSpark.
+- `-db`: Permette di convertire una directory con payload badusb in formato .txt in un database. 
 
 ---
 
@@ -118,6 +120,19 @@ Enter a badusb payload path: input.txt
 ```
 
 **Nota**: per quest'ultima funzionalità consiglio di dare sempre una doverosa controllata al codice `.ino` che viene generato, perchè in alcune casistiche potrebbe generare codice errato. 
+
+Convertire una Directory contente payload BadUSB in un Database:
+```powershell
+PS C:\Users\User\Desktop\DuckLoad> python .\DuckLoad.py -db
+
+[ Enter the path to the directory containing text files ]
+DuckLoad-DB:~$ DatabaseBadUSBPayloadFlipperZero
+
+[ Enter the SQLite database name ]
+DuckLoad-DB:~$ test-db.db
+The files in the directory 'DatabaseBadUSBPayloadFlipperZero' and its subdirectories have been inserted into the 'test-db.db' database.
+```
+Una volta creato il file .db, può essere visualizzato, ad esempio su Visual Studio Code con l'estensione SQLite Viewer.
 
 ---
 
